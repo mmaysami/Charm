@@ -1,0 +1,204 @@
+--   ATTN : x(st) <=> 1/|s|  X(jw/s)    for gaussian
+     	  	     	 (jw/s)^alpha * ... * 
+
+
+-- Update copy method if possible
+
+
+--		T=__ft.ifftshift(__ft.ifft(F)) #using ifftshift in T->F 		fftshift is needed
+
+--		#T=__ft.ifft(F)   #in this case starts from 0 in time, no 		need for shift in T->F
+
+
+-- Reformat Ytick labels for CWT Show ! NOT ABLE TO DO IT
+
+
+================================  TODO   ================================
+
+-- Add support finder to Misc for semi-symmetric data vectors
+
+-- Fix windowing scheme
+
+
+
+
+
+
+
+
+
+
+
+====================================
+            Signal Signs
+====================================
+Source Signature  :          -,   +,   -   ,   -
+(r=src.wavf @ synth)
+
+Image from Trace :          -,   +,   +  ,   +
+(I = wtrace @ estimate)
+
+IAM                      :          +,   +,   -  ,   +
+(iam.data,di,.. @estimat) 
+
+IAM                      :          +,   + ,  +  ,   -
+(iam.data ONLY@iam) 
+
+
+Order Sum:                  ~1,~1, ~1, ~1
+
+
+====================================
+            Windowing       
+====================================
+Adjust Dynamic windowing for events ==> Ned improvments for coarse events
+
+
+====================================
+      Multi-Scale Nwton Method 1D
+====================================
+Only wwork for Normal derivative (H=I)
+Sensitivity to initial guess(both s[3,-1],fi[0.75] available):
+Sigma :  more sensitive to higher sigma values, coarse s & fi make it
+                        worse ~+_5
+Tau     :  Sensitive, Works for +-20 samples
+Alpha  : Very Stable
+
+
+
+
+
+====================================
+     Multi-Scale Newton Method 3D
+====================================
+It is converging when we have normalized partial derivatives which
+                        means( H =I) steepest descent !!!!
+Sensitivity to initial guess:
+Sigma :  a little better than 1D case !
+Tau     :  Very Sensitive
+Alpha  : if other values are good hen it is acceptable 
+
+Smoothing & Fractional Integration :
+
+1. Actual & Initial a : 2.9 , 1.4
+Fractional int helps to get better better alpha
+switching values ==> FI cause Divergence and ith no FI even doesn't work
+
+2.  either ai>alpha or ai<alpha is fine in many cases
+but more sensitive to higher guesses 
+alpha=2.1     ai=0.4..2.6 converge
+(sigma,tau,alpha)=[16*scl,255,2.1]
+guess=[17.2*scl,252,2.7]  
+
+
+3. On many cases fi has no improving effect nad so s does !!! (I guess
+                 it is because we don't have MSN here !)
+                 (sigma,tau,alpha)=[15,255,1.45]
+                 guess=[15.2,251,1.5]
+     (sigma,tau,alpha)=[15*scl,255,2.45]
+     guess=[17.2*scl,248,1.5] 
+
+So, just increasing number of iteration (very cheap) leads to better results
+
+
+4. One possibility is to approx. alpha  with our with MSN 1D(with only
+   one parameter) and then use that as initil guess to get more
+   accurate values of all params !
+(sigma,tau,alpha)=[16*scl,255,2.1]
+guess=[18.2*scl,252,2.6] 
+
+In[1]: run msn1d
+  --< Initial Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [18.199999999999999, 252, -2.6000000000000001]
+   Error   :  0.00102012682911 
+--------------------------- 
+ --< Final Values >--
+Iteration #  40
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [18.199999999999999, 252, -1.9981664700923969]
+Final Error Value = 7.19963938263e-05
+
+In[2]: run msn3d
+  --< Initial 1D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+( si  , ti, ai  ) =  18.2 252 -2.6
+   Error   :  0.00102012682911 
+--------------------------- 
+ --< Final 3D Values >--
+Iteration #  40
+(sigma,tau,alpha) =  16 255 -2.1
+(  si , ti,  ai ) =  16.9155411317 256.0 -2.17113060556
+Final Error Value = 5.81916297276e-06
+
+
+In[3]: run mix1D_3D
+  --< Initial 1D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [18.199999999999999, 252, -2.6000000000000001]
+   Error   :  0.00102012682911 
+--------------------------- 
+ --< Final 1D  Values >--
+Iteration #  20
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [18.199999999999999, 252, -1.9983256859656553]
+Final Error Value = 7.20258018221e-05
+
+  --< Initial 3D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+( si  , ti, ai  ) =  18.2 252 -1.99832568597
+   Error   :  7.20258018221e-05 
+--------------------------- 
+
+ --< Final 3D Values >--
+Iteration #  20
+(sigma,tau,alpha) =  16 255 -2.1
+(  si , ti,  ai ) =  16.8277909669 254.0 -2.00656891279
+Final Error Value = 1.56141503512e-05
+
+
+In[4]: run msn1D
+  --< Initial Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [17.199999999999999, 252, -2.6000000000000001]
+   Error   :  0.00103369314665 
+--------------------------- 
+ --< Final Values >--
+Iteration #  40
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [17.199999999999999, 252, -1.9648034913032462]
+Final Error Value = 3.55029687345e-05
+
+In[5]: run msn3D
+  --< Initial 3D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+( si  , ti, ai  ) =  17.2 252 -2.7
+   Error   :  0.001318669433 
+--------------------------- 
+ --< Final 3D Values >--
+Iteration #  40
+(sigma,tau,alpha) =  16 255 -2.1
+(  si , ti,  ai ) =  29.1325259162 266.0 -6.85624823526
+Final Error Value = 0.000225335670779
+
+In[6]: run mix1D_3D
+  --< Initial 1D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [17.199999999999999, 252, -2.6000000000000001]
+   Error   :  0.00103369314665 
+--------------------------- 
+ --< Final 1D  Values >--
+Iteration #  20
+(sigma,tau,alpha) =  16 255 -2.1
+(si,ti,ai) =  [17.199999999999999, 252, -1.9649336223980844]
+Final Error Value = 3.55146766378e-05
+  --< Initial 3D Guess >--
+(sigma,tau,alpha) =  16 255 -2.1
+( si  , ti, ai  ) =  17.2 252 -1.9649336224
+   Error   :  3.55146766378e-05 
+--------------------------- 
+ --< Final 3D Values >--
+Iteration #  20
+(sigma,tau,alpha) =  16 255 -2.1
+(  si , ti,  ai ) =  16.2952949102 253.0 -1.99387921584
+Final Error Value = 8.02820148032e-06

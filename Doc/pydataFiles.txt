@@ -1,0 +1,89 @@
+This File describes structure used in data files (with pyd extension) which are stored 
+in pydata folder or user-defined path. The first three files have encapsulate a python dictionary 
+and the rest store numpy arrays
+
+AUTHOR:    Mohammad Maysami           Seismic Laboratory for Imaging and Modeling (SLIM)           Department of Earth & Ocean Sciences (EOSC)           The University of British Columbia (UBC)
+
+------------------------------------------
+	synt_model.pyd
+------------------------------------------
+Stores a synthetic model dictionary which contains:
+
+trace	    : Synthetic seismic signal
+events      : All seismic reflector event (separately) as a matrix
+attrib_org  : original attributes of each event for synthetic trace in rows 
+		(location, scale, singularity order, and phase)
+attrib_vect : A matrix where number of columns is equal to length of seismic trace. 
+		The rows show actual values of amplitude, scale, singularity order, 
+		and phase components at location of events and set to null elsewhere.
+
+abstract    : A flag to show that actual attributes are not available[0 for synthetic data]. 
+N	    : Length of seismic signal
+K	    : Requested Number of events by user
+Delta	    : Requested min. distance of events by user
+regul	    : Flag for regular (Amp.) signal
+k_act	    : Actual number of events in signal
+delta_act   : Actual min. distance of events in signal
+
+
+------------------------------------------
+	real_model.pyd
+------------------------------------------
+Stores a synthetic model dictionary which contains:
+
+trace       : Real seismic signal
+abstract    : A flag to show that actual attributes are not available[1 for real data]. 
+N	    : Length of seismic signal
+
+------------------------------------------
+	waves .pyd
+------------------------------------------
+Stores a dictionary named wave which contains:
+
+srcscl      : Scale of seismic source function(only for synthetic data)
+srcewavelet : Seismic source function(only for synthetic data)
+wr          : Continous wavelet for CWT analysis
+cw          : Coefficients of CWT with wr
+
+
+
+
+------------------------------------------
+	attrib_det.pyd
+------------------------------------------
+Stores a numpy array (matrix) of event's attributes for the seismic trace. 
+Each row of matrix has attributes (location,scale, singularity order, and instantaneous phase) 
+of one event in trace. This file contains attribute values in the detection step.
+
+------------------------------------------
+	attrib_est.pyd
+------------------------------------------
+It includes same data type as attrib_det.pyd file. 
+However, attributes are updated with values from estimation step 
+which also contains singularity order.
+
+------------------------------------------
+	attrib_vect_est.pyd
+------------------------------------------
+A matrix where number of columns is equal to length of seismic trace. 
+The rows show estimated values of amplitude, scale, singularity order, 
+and phase components at location of events and set to null elsewhere.
+
+
+------------------------------------------
+	events_det.pyd
+------------------------------------------
+An array (Matrix) of traces, where each row contains one windowed event. 
+The events are results of segmentation.
+
+------------------------------------------
+	events_est.pyd
+------------------------------------------
+It includes same data type as events_est.pyd file. 
+However, each row contains estimated waveform for each event.
+
+------------------------------------------
+	trace_est.pyd
+------------------------------------------
+Stores a row vector resulted by superposition of all estimation for 
+events which should be equal to actual seismic trace in ideal case.

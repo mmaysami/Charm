@@ -1,0 +1,35 @@
+# This scons script fetch data files from FTP server to be used 
+#  as input data for Charm python package. It should be placed in 
+#  where Data path is set to.
+
+# AUTHOR:   Mohammad Maysami
+#           Seismic Laboratory for Imaging and Modeling (SLIM)
+#           Department of Earth & Ocean Sciences (EOSC)
+#           The University of British Columbia (UBC)
+
+# DATE:     Jul , 07
+
+from rsfproj import *
+import os
+
+
+# Set FTP server parameter (from shell environment variables)
+FTPserver = {
+    'server': os.environ.get('SLIM_SERVER'),
+    'login': os.environ.get('SLIM_LOGIN'),
+    'password':os.environ.get('SLIM_PASSWORD')}
+
+
+# Point to location of data files on FTP server
+author = 'mmaysami'	
+loc = 'Veritas'
+filesloc = os.path.join('users',author,loc)
+
+# Fetch data
+# xINPUT.rsf & INPUT.rsf are sample names as example and have to be changed
+for ind in ['08','09','08w0','08w1','08w2','09w0','09w1','09w2']:
+	Fetch('veritas'+ind+'.rsf',filesloc,FTPserver)
+	Flow(ind+'finmig.rsf','veritas'+ind+'.rsf','sfdd form=native')
+	
+#for ind in ['.las','_Nohdr.las','.pyd']:			
+#	Fetch('logs21441'+ind,filesloc,FTPserver)

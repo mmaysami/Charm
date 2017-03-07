@@ -1,0 +1,297 @@
+\documentclass[12pt,titlepage]{article}
+\usepackage{amssymb}
+\usepackage {latexsym}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{verbatim} 
+\usepackage{graphicx}
+\usepackage{epstopdf}
+
+\title{\LARGE{\textbf{ChaRM python package}} \\[10pt] 
+\normalsize{Version 0.1.0}}
+\author{ \textbf{\href{mailto:mmaysami@eos.ubc.ca}{Mohammad
+      Maysami}}\\[15pt] 
+\normalsize{\href{http://slim.eos.ubc.ca}{Seismic Laboratory for
+    Imaging and Modeling~(SLIM)}}\\ 
+\normalsize{\href{http://www.eos.ubc.ca}{Department of Earth and Ocean
+    Sciences(EOSC)}}\\ 
+\normalsize{\href{http://www.ubc.ca}{University of British Columbia (UBC)}}\\ }
+\date{December 2007}
+%=============================
+%  	    Main Body
+%=============================
+\begin{document}
+\maketitle
+%
+%
+\section*{Description}
+\textit{Charm} is a python package to implement recent studies on
+ChaRM project (Characterization of reflectors and modeling). It is
+implementing the new trace-based algorithm we proposed in our recent
+abstract
+(\href{http://slim.eos.ubc.ca/?module=articles&func=display&ptid=10&aid=119}{Maysami  and Herrmann, 2007} 
+\footnote{M. Maysami and F.J. Herrmann, Seismic
+  reflector characterization by a multiscale detection-estimation
+  method, accepted for EAGE 69th Conference \& Exhibition, London.})
+%
+%
+\section*{License}
+You may use this code only under the conditions and terms of the
+license contained in the file \textit{LICENSE} provided with this
+source code. If you do not agree to these terms you may not use this
+software.
+%
+%	
+\section*{Prerequisites}
+\begin{itemize}
+\item Python-2.4 or newer
+  \textit{(\href{http://www.python.org/}{\small{http://www.python.org}})}
+
+\item NumPy-1.0 or newer
+  \textit{(\href{http://numpy.scipy.org/}{\small{http://numpy.scipy.org}})}
+
+\item SciPy-0.5.1 or newer
+  \textit{(\href{http://www.scipy.org/}{\small{http://www.scipy.org}})}
+
+\item Matplotlib-0.90.1 or newer
+  \textit{(\href{http://matplotlib.sourceforge.net/}{\small{http://matplotlib.sourceforge.net}})}
+
+\item MADAGASCAR-2817 \textit{(SVN developer tree at
+    \href{http://rsf.sourceforge.net/}{\small{http://rsf.sourceforge.net}})}
+
+\quad Note: Compile with API=python
+
+% \item SCons-0.96.95 or newer
+%   \textit{(\href{http://www.scons.org/}{\small{http://www.scons.org}})}
+
+\quad Note: It is optional and only required to run SConstruct script.
+\end{itemize}
+%
+%
+\section*{Installation}
+There are two easy installation method for this package. Considering
+permissions limits for non-administrator users, the first one is
+advised since it use this package in the place you have it copied.
+\begin{itemize}
+
+\item Just put the package folder (Charm) into your
+  \texttt{\$PYTHONPATH}. For example, if you are using
+  \small{\textit{BASH}} and \texttt{\$Charm} is the path to your Charm
+  folder(excluding the folder itself), then type:
+	\begin{verse}
+          \texttt{export PYTHONPATH=\$PYTHONPATH:\$Charm}
+	\end{verse}
+        \quad For \textit{CShell} type:
+	\begin{verse}
+          \texttt{setenv PYTHONPATH \${PYTHONPATH}:\$Charm}
+	\end{verse}
+
+      \item Alternatively, you may use setup.py to install the package
+        in your default python path location, enter this command:
+	\begin{verse}
+		\texttt{python setup.py install}
+	\end{verse}
+
+        To install it into a specific folder type this, where
+        /path/to/mypython is a folder which is in your
+        \texttt{\$PYTHONPATH} environment.
+% 	\begin{verse} \texttt{python setup.py install --install-lib=/path/to/mypython}
+% 	\end{verse}
+
+      \item Set environment variables(paths) if they are different
+        than default values. These variables are
+        \emph{CHARM\_Data,CHARM\_Results,CHARM\_pydata,CHARM\_Demos}. Otherwise
+        it will be set to defaults which are folders with the same
+        name (Data, Results, and etc.) in \texttt{\$Charm} as
+        mentioned above.
+  
+For example, if you are using \small{\textit{BASH}} and \texttt{\$DataPATH} is the path where you have input rsf data,then type:
+%
+\begin{verse}
+  \texttt{export CHARM\_Data=\$DataPATH}
+\end{verse}
+\quad For \textit{CShell} type:
+\begin{verse}
+  \texttt{setenv CHARM\_Data \$DataPATH}
+\end{verse}
+%
+\item One of the global variables,  \texttt{\_df\_input}, in \texttt{\_\_init\_\_.py} points to default input rsf file for some of the functions of this package. For your convenience, it is better to be set to a sample rsf file in order to skip declaring it in input argument
+
+\end{itemize}
+%
+%
+\newpage
+\section*{Structure}
+Note that there are many parameters in this method that give more control over characterization process. However, to make it simple I have only included key parameters in function calls and the rest are set in the codes. So, if you need to have  more control over settings,l  you can access them inside \texttt{Main.py} file header.
+\subsection*{Folders:}
+The package consists of some folders as below:
+
+\begin{description}
+\item [Core] It holds main modules of package. Each module has special purposed functions inside. Here is a short list of exiting files in \textit{Core} folder and their functionality.
+
+  \begin{verse}
+    \texttt{\_\_init\_\_.py} : Initializes the import command in
+    python
+
+    \texttt{Misc.py}	: Miscellaneous functions for use in other files.
+
+    \texttt{API.py} : Python interface to RSF for exchanging data.
+
+    \texttt{Synthesize.py} : Module for generating synthetic data using fractional splines or Gaussian manifolds.
+
+    \texttt{Cwt.py} : Module for continuous wavelet transform and other wavelet analysis.
+
+    \texttt{Window.py} : Module for different window functions to be used in segmentation of events in seismic trace.
+
+    \texttt{Manifold.py} : Module for generating Gaussian manifolds and handling them.
+
+    \texttt{Steps.py} : Includes functions to do different steps of characterization as detection, segmentation, and estimation.
+
+    \texttt{Main.py} : Includes characterization function which implements our new method for input seismic trace.
+
+    \texttt{Show.py} : Carries functions for plotting results.
+  \end{verse}
+
+
+\item [Data] This folder is default folder for searching input files
+  unless \texttt{CHARM\_Data} is set as explained in installation
+  section.
+
+\item [Results] This folder is default folder for storing outputs of
+  characterization unless \texttt{CHARM\_Results} is set as explained
+  in installation section.
+
+\item [Doc] It carries documentation files for the package.
+
+\item [pydata] This is where generated python data files by package
+  are stored for future use unless \texttt{CHARM\_pydata} is set as
+  explained in installation section.
+
+\item [Demos] Any saved figure through using this package will sits in
+  this folder unless \texttt{CHARM\_Demos} is set as explained in
+  installation section.It also contains a simple demo to show how
+        the main steps are used.
+
+\end{description}
+%
+%
+\subsection*{Files:}
+\textit{Charm} folder also contains some other files as below:
+\begin{description}
+\item \texttt{\_\_init\_\_.py} initializes the import command in
+  python and sets global variables for the package.
+\item  \texttt{setup.py} helps user to install package as explained before.
+\item \texttt{README}  quick guide user 
+\item \texttt{LICENSE} license agreement information
+\item \texttt{GNU} GNU general public license
+\item  \texttt{SConstruct} \textit{scons} script which runs \texttt{sfchar.py}. Input and output arguments has to be set as explained in the files comments.
+\item \texttt{sfchar.py} a wrapper for function
+  \textit{char}(responsible for the analysis of seismic traces for
+  characterization and extracting attributes) in \texttt{Main.py} file
+  to be called with standard I/O in Unix terminal as explained later
+  in \textit{Using package} section. This will implement the method on
+  2-D seismic sections as input.
+\item  \texttt{sfshow.py} responsible for plotting \textit{rsf} files from Unix terminal with python imaging library. It is able to plot either ordinary 2-D \textit{rsf} files or the 3-D \textit{rsf} files generated by \texttt{sfchar.py}. See the file header for more details about syntax and arguments.
+\end{description}
+%
+%
+\section*{Key variables in Python environment}
+
+This section explains important variables that are passed in the
+output dictionary of characterization function (\textit{char} in
+\texttt{Main.py}) which is responsible for full analysis of seismic
+traces. Remind that this function is also able to generate synthetic
+data. For more information check \texttt{Main.py} file. The variables
+dealing with trace and generated trace with estimation are as below:
+\begin{description}
+\item \texttt{N}	: length of trace
+\item \texttt{trace} : seismic trace as a row vector
+\item \texttt{trace\_det} : trace formed by superposition of windowed
+  events
+\item \texttt{trace\_est} : trace formed by superposition of
+  estimations of each event
+\item \texttt{err} : array consisting of estimation errors for each event.
+\item \texttt{events} : a matrix whose rows are events in seismic
+  trace.
+\item \texttt{events\_det}: a matrix whose rows are segmented events
+  of seismic trace.
+\item \texttt{masks} : a matrix whose rows has corresponding mask used
+  to segment each event.
+
+\end{description}
+%
+\subsubsection*{Attribute matrices:}
+Variables with the form of attrib\_xxx are matrices of attributes of
+events found in the seismic trace. Each row of matrix has attributes
+(location,scale, singularity order, and instantaneous phase) of one
+events in trace.
+\begin{description}
+\item \texttt{attrib\_org} : original attributes for synthetic trace.
+\item \texttt{attrib\_det} : attributes after detection step.
+\item \texttt{attrib\_est} : attributes after estimation step.
+\end{description}
+%
+Variables with the form of attrib\_vect are matrices, where number of
+columns is equal to length of seismic trace. The rows show actual
+values of amplitude, scale, singularity order, and phase components at
+location of events and set to null elsewhere.
+\begin{description}
+\item \texttt{attrib\_vect} : Original attributes in case of synthetic data.
+\item \texttt{attrib\_vect\_est} : Estimated attributes.
+\end{description}
+%
+\subsubsection*{Python data files (pyd extension):}
+These are generated python data files by package(\textit{char}
+function) stored for future reload.
+\begin{description}
+\item \texttt{synt\_model.pyd} : Contains a dictionary of parameters
+  for synthetic seismic data.
+\item \texttt{real\_model.pyd} :  Contains real seismic trace.
+\item \texttt{waves .pyd} : Contains a dictionary of source wavelet
+  and CWT parameters.
+\item \texttt{attrib\_det.pyd} : Contains matrix of attributes after
+  detection step.
+\item \texttt{attrib\_est.pyd} : Contains matrix of attributes after
+  estimation step.
+\item \texttt{events\_det .pyd} : A matrix of traces, each containing
+  one windowed event.
+\item \texttt{events\_est.pyd} : A matrix of traces, each containing
+  one estimated event.
+\item \texttt{trace\_est.pyd} : Contains superposition of estimated
+  events which should be similar to actual trace.
+\end{description}
+%
+For more information about these data files refer to \texttt{pydataFiles.txt}
+%
+%
+\section*{How to use package}
+\subsubsection*{Python:}
+Go into your python interpreter. Type "import Charm" at your python
+command prompt. As a demo, you may run following command in python
+after importing the package.
+\begin{verse}
+  \texttt{Charm.char(type='new',user=1)}
+\end{verse}
+%
+You may also try more detailed things while using \emph{detect,
+  segment, and BFGSestimate} functions from the package. All these
+functions are well-documented and easy to follow. To get help for any
+function you can use \emph{help(name of function)}.
+
+\subsubsection*{Unix terminal with standard input and output:}
+Use following commands in terminal to analyze seismic data and show
+results.
+\begin{verse}
+  \texttt{./sfchar.py <input.rsf >output.rsf args=...}
+
+  \texttt{./sfshow.py <output.rsf           args=...}
+\end{verse}
+%
+Arguments are optional and will be set to default if not provided. For more details about arguments check the scripts header for documentation.\\[20pt]
+%
+%
+\href{mailto:mmaysami@eos.ubc.ca}{\textbf{Mohammad Maysami}}\\
+\href{http://www.eos.ubc.ca/~mmaysami}{http://www.eos.ubc.ca/$\sim$mmaysami}\\
+\href{http://slim.eos.ubc.ca}{Seismic Laboratory for Imaging and Modeling~(SLIM)}\\ 
+\href{http://www.ubc.ca}{University of British Columbia (UBC)}
+\end{document} 

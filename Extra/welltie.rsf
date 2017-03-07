@@ -1,0 +1,17 @@
+a=1	PyTools/Charm/Extra:	mmaysami@gather.eos.ubc.ca	Tue Dec 11 05:13:51 2007
+
+	o1=2.7
+	d2=12.5
+	n2=1855
+	o2=0
+	Null=-100
+	label1="Time"
+	n3=6
+	data_format="native_float"
+	label2="Offset"
+	esize=4
+	in="/Users/mmaysami/DoNotBackup/MY_RSFROOT/DATAPATH/welltie.rsf@"
+	unit1="s"
+	unit2="m"
+	d1=0.004
+	n1=76
