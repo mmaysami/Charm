@@ -13,6 +13,10 @@ LICENSE
 	this source code. If you do not agree to these terms you may 
 	not use this software.
 
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. 
+	
 
 PREREQUISITES
 	-> Python-2.4 or newer (http://www.python.org/)
